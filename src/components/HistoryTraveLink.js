@@ -18,14 +18,17 @@ const HistoryTraveLink = () => {
       // userHistoriesTransaction = [];
       setUserHistoriesTransaction([]);
       try {
-        // const lastTicketTransaction = await AsyncStorage.getItem("lastTicketTransaction");
-        // const parsedLastTicketTransaction = JSON.parse(lastTicketTransaction);
-        // lastTicket = parsedLastTicketTransaction;
-
+      
         const historiesTransaction = await AsyncStorage.getItem("historiesTransaction");
         const parsedHistoriesTransaction = JSON.parse(historiesTransaction);
         // userHistoriesTransaction = parsedHistoriesTransaction;
-        setUserHistoriesTransaction(parsedHistoriesTransaction);
+
+        parsedHistoriesTransaction.reverse();
+        const reversedAndSlicedHistoriesTransaction = parsedHistoriesTransaction.slice(0, 5);
+        console.log("history order", parsedHistoriesTransaction);
+        console.log("history order reverse", reversedAndSlicedHistoriesTransaction);
+
+        setUserHistoriesTransaction(reversedAndSlicedHistoriesTransaction);
       } catch (error) {
         console.log("Error while fetching History Transaction: " + error);
       }
@@ -33,6 +36,17 @@ const HistoryTraveLink = () => {
 
     getHistoryTransaction();
   }, []);
+
+  const formatDate = (dateString) => {
+    const createdAtDate = new Date(dateString);
+    const day = createdAtDate.getDate();
+    const month = createdAtDate.toLocaleString('default', { month: 'short' });
+    const year = createdAtDate.getFullYear();
+    const hours = createdAtDate.getHours();
+    const minutes = createdAtDate.getMinutes();
+  
+    return `${day} ${month} ${year}, ${hours}:${minutes}`;
+  }
 
   const [fontsLoaded] = useFonts({
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
@@ -70,7 +84,7 @@ const HistoryTraveLink = () => {
                       {ticket.destination}
                     </Text>
                   </View>
-                  <Text style={ticket.active ? styles.tittleDateActive : styles.tittleDateUsed}>15 Feb, 09:35</Text>
+                  <Text style={ticket.active ? styles.tittleDateActive : styles.tittleDateUsed}>{formatDate(ticket.createdAt)}</Text>
                 </View>
                 <View style={styles.listRightContainer}>
                   <View style={ticket.active ? styles.activeContainerActive : styles.activeContainerUsed}>
@@ -84,7 +98,7 @@ const HistoryTraveLink = () => {
                       { marginTop: 12, marginRight: 10 },
                     ]}
                     >
-                    #{ticket.amount.toString().padStart(4, '0')}
+                    #{ticket.orderId.toString().padStart(4, '0')}
                   </Text>
                 </View>
               </View>

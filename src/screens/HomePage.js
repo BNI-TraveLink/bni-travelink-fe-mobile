@@ -280,7 +280,7 @@ const HomePage = () => {
               <Text style={styles.pointText}>MyPoints</Text>
               <Text style={styles.pointText}>1.946</Text>
             </View>
-            {console.log("lasticket JSX", lastTicket)}
+            {console.log("lasticket JSX")}
             {
               lastTicket != null
               ? (
@@ -318,7 +318,7 @@ const HomePage = () => {
                             <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}> */}
                           <View style={styles.activeContainer}>
                             <View style={styles.activeContainer}>
-                              <Text style={styles.tittleActive}> {lastTicket.active ? "Active" : "Reorder"} </Text>
+                              <Text style={lastTicket.active ? styles.tittleActive : styles.tittleUsed}> {lastTicket.active ? "Active" : "Reorder"} </Text>
                             </View>
                           </View>
                           <Text
@@ -327,7 +327,7 @@ const HomePage = () => {
                               { marginTop: 12, marginRight: 10 },
                             ]}
                           >
-                            #{lastTicket.amount.toString().padStart(4, '0')}
+                            #{lastTicket.orderId.toString().padStart(4, '0')}
                           </Text>
                         </View>
                       </View>
@@ -727,6 +727,12 @@ const styles = StyleSheet.create({
 
   tittleActive: {
     color: "#005E6A",
+    fontFamily: "Inter-Medium",
+    fontSize: 12,
+  },
+
+  tittleUsed: {
+    color: "#696969",
     fontFamily: "Inter-Medium",
     fontSize: 12,
   },

@@ -119,6 +119,14 @@ const Receipt = () => {
             console.log("Time:", newTimePart);
 
 
+            const userTicketsTransaction = await axios.get(
+              `${apiUrl}/transaction/userId/${user_id}`
+            );
+            const historiesTransaction = userTicketsTransaction.data;
+            await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
+            
+
+
 
           } catch (error) {
             console.log("Error fetching transaction: " + error);

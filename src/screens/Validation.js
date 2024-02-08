@@ -242,6 +242,13 @@ const Validation = () => {
       const generateTicketResponse = await axios.post(
         `${apiUrl}/tickets/GenerateTicket/${orderId}`
       );
+
+      const userTicketsTransaction = await axios.get(
+        `${apiUrl}/transaction/userId/${user_id}`
+      );
+      const historiesTransaction = userTicketsTransaction.data;
+      await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
+      
     }catch(Error){
       console.log("Error when Generate Ticket" + Error);
     }

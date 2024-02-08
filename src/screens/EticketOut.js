@@ -24,6 +24,7 @@ const fontTheme = {
 const EticketIn = ({ selectedPeople }) => {
   const [ticketsDetail, setTicketsDetail] = useState([]);
   const [accordion, setAccordion] = useState({});
+  const [transaction, setTransaction] = useState(null);
 
   useEffect(() => {
     const getTicketsDetail = async () => {
@@ -32,6 +33,7 @@ const EticketIn = ({ selectedPeople }) => {
         const parsedTransactionData = JSON.parse(transactionData);
         // const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
         const fkTransaction = parsedTransactionData.skTransaction;
+        setTransaction(fkTransaction);
         const response = await axios.get(`${API_URL}/tickets/${fkTransaction}`);
         const data = response.data;
 
@@ -81,7 +83,30 @@ const EticketIn = ({ selectedPeople }) => {
     return null;
   }
 
-  const handleDone = () => {
+  const doneTransaction = async () => {
+    try {
+           
+      const formData = new FormData();
+
+      formData.append('skTransaction', transaction);
+
+
+      const response = await axios.post(`${API_URL}/transaction/doneTransaction`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(response.data))
+
+
+    } catch (error) {
+      // Handle errors here
+      console.log('API Error:', error.message);
+    }
+  };
+
+  const handleDone = async() => {
+    await doneTransaction();
     navigation.navigate("Home");
   };
 
