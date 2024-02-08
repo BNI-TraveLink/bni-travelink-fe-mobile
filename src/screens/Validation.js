@@ -84,11 +84,6 @@ const Validation = () => {
         const totalPriceData = await AsyncStorage.getItem("totalPrice");
         const parsedTotalPricedData = JSON.parse(totalPriceData);
         setTotalPrice(parsedTotalPricedData);
-
-
-
-
-
       } catch (error) {
         console.log("Error fetching data: " + error);
       }
@@ -109,7 +104,6 @@ const Validation = () => {
 
   const handleTransactionPassword = async () => {
     try {
-
       setIsLoggedIn(true);
       const formData = new FormData();
       formData.append("userId", user_id);
@@ -123,6 +117,7 @@ const Validation = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${userData.jwt}`,
           },
         }
       );
@@ -191,6 +186,7 @@ const Validation = () => {
       const response = await axios.post(`${apiUrl}/payment/GeneratePayment`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userData.jwt}`,
         },
       });
 
@@ -218,6 +214,7 @@ const Validation = () => {
       const response = await axios.post(`${apiUrl}/payment/updatePayment`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userData.jwt}`,
         },
       });
 
@@ -234,17 +231,23 @@ const Validation = () => {
   };
 
   const generateTicket= async ()=> {
-
-   
     try{
       const orderId = orderID;
       console.log("order id buat tiket",orderID);
       const generateTicketResponse = await axios.post(
-        `${apiUrl}/tickets/GenerateTicket/${orderId}`
+        `${apiUrl}/tickets/GenerateTicket/${orderId}`, null, {
+          headers: {
+            Authorization: `Bearer ${userData.jwt}`,
+          }
+        }
       );
 
       const userTicketsTransaction = await axios.get(
-        `${apiUrl}/transaction/userId/${user_id}`
+        `${apiUrl}/transaction/userId/${user_id}`, {
+          headers: {
+            Authorization: `Bearer ${userData.jwt}`,
+          }
+        }
       );
       const historiesTransaction = userTicketsTransaction.data;
       await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
@@ -252,12 +255,7 @@ const Validation = () => {
     }catch(Error){
       console.log("Error when Generate Ticket" + Error);
     }
-
-   
   }
-
-
-
 
   const handlePay = async () => {
     await handleTransactionPassword();

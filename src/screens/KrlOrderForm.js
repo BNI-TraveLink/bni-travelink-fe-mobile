@@ -55,7 +55,6 @@ const KrlOrderForm = () => {
   };
 
   useEffect(() => {
-
     const setDefault = () => {
       setSelectedStation1(null);
       setSelectedStation2(null);
@@ -107,6 +106,13 @@ const KrlOrderForm = () => {
     getStations();
     reorder();
   }, []);
+
+  useEffect(() => {
+    if (selectedStation1 !== null && selectedStation2 !== null && selectedStation1 === selectedStation2) {
+      setIsConfirmationVisible(false);
+      alert("Departure and destination stations should be different.");
+    }
+  }, [selectedStation1, selectedStation2]);
 
   const [fontsLoaded] = useFonts({
     "Poppins-Bold": require("../fonts/Poppins/Poppins-Bold.ttf"),
@@ -169,10 +175,32 @@ const KrlOrderForm = () => {
           <View>
             <View style={styles.menuContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
+                {/* <Image
                   source={require("../images/kai-commuter-logo.png")}
                   style={[styles.kaiLogo, { marginLeft: 133 }]}
-                />
+                /> */}
+
+                {serviceName === "KRL" ? (
+                  <Image
+                    source={require("../images/kai-commuter-logo.png")}
+                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                  />
+                ) : serviceName === "TJ" ? (
+                  <Image
+                    source={require("../images/logotije.png")}
+                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                  />
+                ) : serviceName === "MRT" ? (
+                  <Image
+                    source={require("../images/logomrt.png")}
+                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                  />
+                ) : (
+                  <Image
+                    source={require("../images/logolrt.png")}
+                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                  />
+                )}
                 
                 <TouchableOpacity style={styles.buttonMaps} onPress={openModal}>
                   <Image

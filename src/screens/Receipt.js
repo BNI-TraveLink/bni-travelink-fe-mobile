@@ -45,9 +45,7 @@ const Receipt = () => {
   const [datePart, setDatePart] = useState('');
   const [timePart, setTimePart] = useState('');
 
-
   let createdAtDate ;
-
   
   useEffect(() => {
     const fetchData = async () => {
@@ -86,17 +84,22 @@ const Receipt = () => {
 
         const orderIdData = await AsyncStorage.getItem("orderId");
         const parsedOrderIdData = JSON.parse(orderIdData);
-        setOrderId(parsedOrderIdData);
+        setOrderId(parsedOrderIdData, parsedSessionData.jwt);
 
         console.log("receipt.js parsedOrderdData");
-        await getTransaction(parsedOrderIdData);
+        await getTransaction(parsedOrderIdData, parsedSessionData.jwt, parsedSessionData.userId);
         };
   
-        const getTransaction = async (orderId) => {
+        const getTransaction = async (orderId, jwtToken, userId) => {
           try {
             console.log("orderID",orderId);
+            console.log("jwtToken in Receipt: " + jwtToken);
             const transaction = await axios.get(
-              `${apiUrl}/transaction/orderId/${orderId}`
+              `${apiUrl}/transaction/orderId/${orderId}`, {
+                headers: {
+                  Authorization: `Bearer ${jwtToken}`,
+                }
+              }
             );
             setTransaction(transaction.data.data  );
             console.log("transaction",transaction);
@@ -105,31 +108,35 @@ const Receipt = () => {
             await AsyncStorage.setItem("transaction", JSON.stringify( transaction.data));
            
             createdAtDate = new Date(transaction.data.createdAt);
-          const newDatePart = createdAtDate.toISOString().split('T')[0];
-          const newTimePart = createdAtDate.toLocaleTimeString('id-ID', {
-            hour12: false, // Use 24-hour format
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-          });
-          setDatePart(newDatePart);
-          setTimePart(newTimePart);
-        
+            const newDatePart = createdAtDate.toISOString().split('T')[0];
+            const newTimePart = createdAtDate.toLocaleTimeString('id-ID', {
+              hour12: false, // Use 24-hour format
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            });
+            setDatePart(newDatePart);
+            setTimePart(newTimePart);
+          
             console.log("Date:", newDatePart);
             console.log("Time:", newTimePart);
 
-
+            console.log("jwtToken in Receipt for userTicketsTransaction: " + jwtToken);
+            console.log(`Data sent to BE: ${apiUrl}/transaction/userId/${userId}`);
             const userTicketsTransaction = await axios.get(
-              `${apiUrl}/transaction/userId/${user_id}`
+              `${apiUrl}/transaction/userId/${userId}`, {
+                headers: {
+                  Authorization: `Bearer ${jwtToken}`,
+                }
+              }
             );
+            console.log("userTicketsTransaction: " + userTicketsTransaction);
+            console.log("DATA: " + userTicketsTransaction.data);
             const historiesTransaction = userTicketsTransaction.data;
             await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
             
-
-
-
           } catch (error) {
-            console.log("Error fetching transaction: " + error);
+            console.log("Error fetching transaction in Receipt: " + error);
           }
         };
   

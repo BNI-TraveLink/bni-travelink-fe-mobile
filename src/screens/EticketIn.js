@@ -26,7 +26,26 @@ const EticketIn = ({ selectedPeople }) => {
   const [ticketsDetail, setTicketsDetail] = useState([]);
   const [accordion, setAccordion] = useState({});
 
+  const [userData, setUserData] = useState("");
+  const [serviceName, setServiceName] = useState("");
+
   useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        setUserData(parsedSessionData);
+
+        const serviceData = await AsyncStorage.getItem("travelinkData");
+        const parsedServiceData = JSON.parse(serviceData);
+        setServiceName(parsedServiceData.service);
+        
+        await getTicketsDetail(parsedSessionData.jwt);
+      } catch (error) {
+        console.log("Error fetching user data: ", error);
+      }
+    };
+
     const parseTransactionData = async () => {
       try {
         const transactionData = await AsyncStorage.getItem("transaction");
@@ -50,7 +69,7 @@ const EticketIn = ({ selectedPeople }) => {
       }
     };
 
-    const getTicketsDetail = async () => {
+    const getTicketsDetail = async (jwtToken) => {
       try {
         const transactiondata = await parseTransactionData();
         const fkTransaction = transactiondata.skTransaction;
@@ -61,7 +80,13 @@ const EticketIn = ({ selectedPeople }) => {
           return;
         }
 
-        const response = await axios.get(`${apiUrl}/tickets/${fkTransaction}`);
+        const response = await axios.get(
+          `${apiUrl}/tickets/${fkTransaction}`, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            }
+          }
+        );
         const data = response.data;
 
         const extractedData = data.map((ticket) => ({
@@ -84,7 +109,7 @@ const EticketIn = ({ selectedPeople }) => {
       }
     };
 
-    getTicketsDetail();
+    getUserData();
   }, []); // Empty dependency array to run once on component mount
 
   const [fontsLoaded] = useFonts({
@@ -171,10 +196,31 @@ const EticketIn = ({ selectedPeople }) => {
         {/* Image in the middle below App Bar */}
         <View style={styles.orderdetailContainer}>
           {/* White background for payment confirmation data with shadow */}
-          <Image
+          {/* <Image
             source={require("../images/logo_krl.png")}
             style={styles.krlImage}
-          />
+          /> */}
+          {serviceName === "KRL" ? (
+            <Image
+              source={require("../images/kai-commuter-logo.png")}
+              style={[styles.krlImage, { marginLeft: 133 }]}
+            />
+          ) : serviceName === "TJ" ? (
+            <Image
+              source={require("../images/logotije.png")}
+              style={[styles.krlImage, { marginLeft: 133 }]}
+            />
+          ) : serviceName === "MRT" ? (
+            <Image
+              source={require("../images/logomrt.png")}
+              style={[styles.krlImage, { marginLeft: 133 }]}
+            />
+          ) : (
+            <Image
+              source={require("../images/logolrt.png")}
+              style={[styles.krlImage, { marginLeft: 133 }]}
+            />
+          )}
           <Text style={styles.entrancegateText}>Entrance Gate Ticket </Text>
           <View style={styles.commuterline}></View>
         </View>
