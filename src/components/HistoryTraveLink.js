@@ -3,7 +3,7 @@ import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import axios from "axios";
 import Constants from "expo-constants";
 const apiUrl = Constants.manifest.extra.API_URL;
 
@@ -12,6 +12,7 @@ const apiUrl = Constants.manifest.extra.API_URL;
 const HistoryTraveLink = () => {
   const navigation = useNavigation();
   const [userHistoriesTransaction, setUserHistoriesTransaction] = useState([]);
+  const [stations, setStations] = useState([]);
 
   useEffect(() => {
     const getHistoryTransaction = async () => {
@@ -48,6 +49,54 @@ const HistoryTraveLink = () => {
     return `${day} ${month} ${year}, ${hours}:${minutes}`;
   }
 
+  const handleHistoryActive = async (lastTicket) => {
+    console.log("handlehistoryactive", lastTicket);
+    await AsyncStorage.setItem("transaction", JSON.stringify(lastTicket));
+    navigation.navigate("EticketIn");
+  };
+
+  const handleHistoryReorder = async (lastTicket) => {
+    setStations([]);
+
+    try {
+      await AsyncStorage.setItem("reorder", JSON.stringify(lastTicket));
+      await getListStations(lastTicket.service.name);
+      navigation.navigate("KrlOrderForm");
+    } catch (error) {
+      console.log("Error hitting the API:", error);
+    }
+  };
+
+  const getListStations = async (travelinkService) => {
+    const url = `${apiUrl}/service/getStationByServiceName`;
+
+    try {
+      const response = await axios.get(url, {
+        params: {
+          serviceName: travelinkService,
+        },
+      });
+
+      const newStations = response.data.map((station) => ({
+        label: station.station_name,
+        value: station.station_name,
+      }));
+
+      setStations(newStations);
+
+      const dataToSave = {
+        service: travelinkService,
+        stations: newStations, // Use the updated stations
+        price: response.data[0].fkService.price,
+      };
+
+      await AsyncStorage.setItem("travelinkData", JSON.stringify(dataToSave));
+    } catch (error) {
+      console.log("Error getting station data:", error);
+      throw error; // Rethrow the error to be caught in handleMrtPress
+    }
+  };
+
   const [fontsLoaded] = useFonts({
     "Inter-Medium": require("../fonts/Inter/static/Inter-Medium.ttf"),
     "Poppins-Regular": require("../fonts/Poppins/Poppins-Regular.ttf"),
@@ -67,6 +116,8 @@ const HistoryTraveLink = () => {
         {console.log("userHistoriesTransaction ", userHistoriesTransaction)}
         {userHistoriesTransaction.length > 0 && userHistoriesTransaction.map((ticket, index) => (
           <View key={ticket.skTransaction} style={ticket.active ? styles.historyContainerActive : styles.historyContainerUsed}>
+            <TouchableOpacity onPress={() => ticket.active ? handleHistoryActive(ticket) : handleHistoryReorder(ticket)}
+            >
             <View style={ticket.active ? styles.historyContentActive : styles.historyContentUsed}>
               <View style={ticket.active ? styles.listContainerActive : styles.listContainerUsed}>
                 <Image
@@ -103,6 +154,7 @@ const HistoryTraveLink = () => {
                 </View>
               </View>
             </View>
+            </TouchableOpacity>
           </View>
         ))}
         {/* <View style={{marginTop: 60}}>

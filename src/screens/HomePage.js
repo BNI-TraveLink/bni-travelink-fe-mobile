@@ -310,14 +310,15 @@ const HomePage = () => {
                           </View>
                           <Text style={styles.tittleDate}>
                             {/* Valid until 15 Feb 2024, 23.59 */}
-                            Valid until {moment(lastTicket.expiredAt).format('D MMM YYYY,').concat(' 00.00')}
+                            Valid until {moment(lastTicket.expiredAt).format('D MMM YYYY,').concat(' 23.59')}
                           </Text>
                         </View>
                         <View style={styles.listRightContainer}>
                           {/* <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
                             <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}> */}
-                          <View style={styles.activeContainer}>
-                            <View style={styles.activeContainer}>
+                            {console.log("styling lastTicket.active", lastTicket.active)}
+                          <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
+                            <View style={lastTicket.active ? styles.activeContainer : styles.reorderContainer}>
                               <Text style={lastTicket.active ? styles.tittleActive : styles.tittleUsed}> {lastTicket.active ? "Active" : "Reorder"} </Text>
                             </View>
                           </View>
@@ -707,6 +708,19 @@ const styles = StyleSheet.create({
 
   activeContainer: {
     backgroundColor: "#A1E496",
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+  activeContainerUsed: {
+    backgroundColor: "#82E5F2",
     borderRadius: 20,
     shadowColor: "black",
     shadowOffset: {

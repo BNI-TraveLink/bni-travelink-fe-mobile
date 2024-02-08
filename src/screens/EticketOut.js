@@ -25,10 +25,16 @@ const EticketIn = ({ selectedPeople }) => {
   const [ticketsDetail, setTicketsDetail] = useState([]);
   const [accordion, setAccordion] = useState({});
   const [transaction, setTransaction] = useState(null);
+  const [user_id, setUser_id] = useState("");
+
 
   useEffect(() => {
     const getTicketsDetail = async () => {
       try {
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        setUser_id(parsedSessionData.userId);
+
         const transactionData = await AsyncStorage.getItem("transaction");
         const parsedTransactionData = JSON.parse(transactionData);
         // const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
@@ -97,6 +103,12 @@ const EticketIn = ({ selectedPeople }) => {
         },
       });
       await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(response.data))
+
+      const userTicketsTransaction = await axios.get(
+        `${API_URL}/transaction/userId/${user_id}`
+      );
+      const historiesTransaction = userTicketsTransaction.data;
+      await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
 
 
     } catch (error) {
