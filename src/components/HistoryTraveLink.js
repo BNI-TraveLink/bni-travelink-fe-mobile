@@ -75,6 +75,9 @@ const HistoryTraveLink = () => {
         params: {
           serviceName: travelinkService,
         },
+        headers: {
+          Authorization: `Bearer ${userData.jwt}`,
+        }
       });
 
       const newStations = response.data.map((station) => ({

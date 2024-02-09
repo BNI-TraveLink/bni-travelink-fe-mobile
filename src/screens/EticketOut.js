@@ -132,7 +132,11 @@ const EticketIn = ({ selectedPeople }) => {
       await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(response.data))
 
       const userTicketsTransaction = await axios.get(
-        `${API_URL}/transaction/userId/${user_id}`
+        `${API_URL}/transaction/userId/${user_id}`, {
+          headers: {
+            Authorization: `Bearer ${userData.jwt}`,
+          },
+        }
       );
       const historiesTransaction = userTicketsTransaction.data;
       await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
