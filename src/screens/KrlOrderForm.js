@@ -223,12 +223,36 @@ const KrlOrderForm = () => {
                         style={styles.closeButton}
                         onPress={() => setModalVisible(false)}
                       >
-                        <Ionicons name="close" size={20} color="#005E6A"/>
+                        <Ionicons name="close" size={20} color="#005E6A" />
                       </TouchableOpacity>
-                      <Image
+                      {/* <Image
                         source={require("../images/rute-item.png")}
                         style={{ height: 430, width: 300 }}
-                      />
+                        resizeMode="contain"
+                      /> */}
+
+                      {serviceName === "KRL" ? (
+                        <Image
+                          source={require("../images/ruteKRL-item.png")}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      ) : serviceName === "TJ" ? (
+                        <Image
+                          source={require("../images/ruteTIJE-item.png")}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      ) : serviceName === "MRT" ? (
+                        <Image
+                          source={require("../images/ruteMRT-item.png")}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      ) : (
+                        <Image
+                          source={require("../images/ruteLRT-item.png")}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      )}
+
                     </View>
                   </View>
                 </Modal>
@@ -284,7 +308,7 @@ const KrlOrderForm = () => {
                 </Text>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Image
-                    source={require("../images/trainRight-item.png")}
+                    source={require("../images/trainLeft-item.png")}
                     style={{ height: 40, width: 40, marginTop: 15 }}
                   />
                   {stations && (

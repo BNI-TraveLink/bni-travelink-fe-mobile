@@ -120,10 +120,33 @@ const HistoryTraveLink = () => {
             >
             <View style={ticket.active ? styles.historyContentActive : styles.historyContentUsed}>
               <View style={ticket.active ? styles.listContainerActive : styles.listContainerUsed}>
-                <Image
+                {/* <Image
                   source={require("../images/commuter-historyItem.png")}
                   style={{ height: 40, width: 40 }}
-                ></Image>
+                ></Image> */}
+
+                {ticket.service.name === "KRL" ? (
+                  <Image
+                    source={require("../images/commuter-historyItem.png")}
+                    style={{ height: 40, width: 40 }}
+                  />
+                ) : ticket.service.name === "TJ" ? (
+                  <Image
+                    source={require("../images/tije-historyItem.png")}
+                    style={{ height: 40, width: 40 }}
+                  />
+                ) : ticket.service.name === "MRT" ? (
+                  <Image
+                    source={require("../images/mrt-historyItem.png")}
+                    style={{ height: 40, width: 40 }}
+                  />
+                ) : (
+                  <Image
+                    source={require("../images/lrt-historyItem.png")}
+                    style={{ height: 40, width: 40 }}
+                  />
+                )}
+
                 <View style={styles.textContainer}>
                   <Text style={styles.tittleTraveLinkActive}>{ticket.service.name}</Text>
                   <View style={styles.destinationContainer}>
