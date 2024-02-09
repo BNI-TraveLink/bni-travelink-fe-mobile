@@ -48,19 +48,21 @@ const KrlOrderForm = () => {
     setModalVisible(false);
   };
 
+  const setDefault = () => {
+    setSelectedStation1(null);
+    setSelectedStation2(null);
+    setSelectedPeople(null);
+    dataUsedToReorder = [];
+  }
   const navigation = useNavigation();
 
   const handleBackPress = () => {
+    setDefault();
     navigation.navigate("TraveLink");
   };
 
   useEffect(() => {
-    const setDefault = () => {
-      setSelectedStation1(null);
-      setSelectedStation2(null);
-      setSelectedPeople(null);
-      dataUsedToReorder = [];
-    }
+
 
     const getStations = async () => {
       try {

@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from 'moment';
 
 // import {API_URL} from "@env";
 
@@ -151,7 +152,7 @@ const Confirmation = ({
                   {selectedStation2}
                 </Text>
                 <Text style={styles.textValid}>
-                  Valid until 15 Feb 2024, 23:59
+                  Valid until {moment().format('D MMM YYYY')}, 23:59
                 </Text>
               </View>
               <Text style={styles.textPriceTicket}>Rp {price}</Text>

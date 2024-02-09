@@ -287,7 +287,7 @@ const TicketDetails = () => {
           />
           <Text style={styles.fromText}>{departure}</Text>
           <Text style={styles.toText}>{destination}</Text>
-          <Text style={styles.validText}>Valid until {expiredAtDate} {expiredAtTime}</Text>
+          <Text style={styles.validText}>Valid until {expiredAtDate},23.59</Text>
         </View>
       </View>
       {/* White background at the bottom with a button */}
