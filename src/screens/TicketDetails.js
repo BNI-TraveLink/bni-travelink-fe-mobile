@@ -92,15 +92,19 @@ const TicketDetails = () => {
         setOrderId(parsedOrderIdData);
 
         console.log("receipt.js parsedOrderdData");
-        await getTransaction(parsedOrderIdData);
+        await getTransaction(parsedOrderIdData, parsedSessionData.jwt);
         };
-        const getTransaction = async (orderId) => {
+        const getTransaction = async (orderId, jwtToken) => {
           try {
             console.log("orderID",orderId);
             const transaction = await axios.get(
-              `${apiUrl}/transaction/orderId/${orderId}`
+              `${apiUrl}/transaction/orderId/${orderId}`, {
+                headers: {
+                  Authorization: `Bearer ${jwtToken}`,
+                }
+              }
             );
-            setTransaction(transaction.data.data  );
+            setTransaction(transaction.data.data);
             console.log("transaction",transaction);
             console.log("transaction",transaction.data);
             console.log("date",transaction.data.createdAt);
@@ -114,23 +118,20 @@ const TicketDetails = () => {
               second: '2-digit'
             }));
             createdAtDate = new Date(transaction.data.createdAt);
-          const newDatePart = createdAtDate.toISOString().split('T')[0];
-          const newTimePart = createdAtDate.toLocaleTimeString('id-ID', {
-            hour12: false, // Use 24-hour format
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-          });
-          setDatePart(newDatePart);
-          setTimePart(newTimePart);
+            const newDatePart = createdAtDate.toISOString().split('T')[0];
+            const newTimePart = createdAtDate.toLocaleTimeString('id-ID', {
+              hour12: false, // Use 24-hour format
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            });
+            setDatePart(newDatePart);
+            setTimePart(newTimePart);
         
             console.log("Date:", newDatePart);
             console.log("Time:", newTimePart);
-
-
-
           } catch (error) {
-            console.log("Error fetching transaction: " + error);
+            console.log("Error fetching transaction in TicketDetails: " + error);
           }
         };
   
@@ -192,10 +193,31 @@ const TicketDetails = () => {
       {/* <View style={styles.centeredImageContainer}> */}
       {/* White background for payment confirmation data with shadow */}
       <View style={styles.paymentContainer}>
-        <Image
+        {/* <Image
           source={require("../images/logo_krl.png")}
           style={styles.krlImage}
-        />
+        /> */}
+        {serviceName === "KRL" ? (
+          <Image
+            source={require("../images/kai-commuter-logo.png")}
+            style={[styles.krlImage, { marginLeft: 133 }]}
+          />
+        ) : serviceName === "TJ" ? (
+          <Image
+            source={require("../images/logotije.png")}
+            style={[styles.krlImage, { marginLeft: 133 }]}
+          />
+        ) : serviceName === "MRT" ? (
+          <Image
+            source={require("../images/logomrt.png")}
+            style={[styles.krlImage, { marginLeft: 133 }]}
+          />
+        ) : (
+          <Image
+            source={require("../images/logolrt.png")}
+            style={[styles.krlImage, { marginLeft: 133 }]}
+          />
+        )}
         <View style={styles.paymentConfirmationRow}>
           <Text style={styles.paymentConfirmationLabel}>Status</Text>
           <Text

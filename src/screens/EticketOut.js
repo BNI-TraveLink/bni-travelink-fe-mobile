@@ -28,8 +28,27 @@ const EticketIn = ({ selectedPeople }) => {
   const [user_id, setUser_id] = useState("");
 
 
+  const [userData, setUserData] = useState("");
+  const [serviceName, setServiceName] = useState("");
+
   useEffect(() => {
-    const getTicketsDetail = async () => {
+    const getUserData = async () => {
+      try {
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        setUserData(parsedSessionData);
+
+        const serviceData = await AsyncStorage.getItem("travelinkData");
+        const parsedServiceData = JSON.parse(serviceData);
+        setServiceName(parsedServiceData.service);
+        
+        await getTicketsDetail(parsedSessionData.jwt);
+      } catch (error) {
+        console.log("Error fetching user data: ", error);
+      }
+    };
+
+    const getTicketsDetail = async (jwtToken) => {
       try {
         const sessionData = await AsyncStorage.getItem("session");
         const parsedSessionData = JSON.parse(sessionData);
@@ -40,7 +59,14 @@ const EticketIn = ({ selectedPeople }) => {
         // const fkTransaction = "418eccd9-1e15-49d7-946a-0fa1d7c23db8";
         const fkTransaction = parsedTransactionData.skTransaction;
         setTransaction(fkTransaction);
-        const response = await axios.get(`${API_URL}/tickets/${fkTransaction}`);
+
+        const response = await axios.get(
+          `${API_URL}/tickets/${fkTransaction}`, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            }
+          }          
+        );
         const data = response.data;
 
         const extractedData = data.map((ticket) => ({
@@ -53,7 +79,7 @@ const EticketIn = ({ selectedPeople }) => {
       }
     };
 
-    getTicketsDetail();
+    getUserData();
   }, []);
 
   const [fontsLoaded] = useFonts({
@@ -95,17 +121,22 @@ const EticketIn = ({ selectedPeople }) => {
       const formData = new FormData();
 
       formData.append('skTransaction', transaction);
-
-
+      
+      console.log("userId in EticketOut.doneTransaction: " + userData.jwt);
       const response = await axios.post(`${API_URL}/transaction/doneTransaction`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userData.jwt}`,
         },
       });
       await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(response.data))
 
       const userTicketsTransaction = await axios.get(
-        `${API_URL}/transaction/userId/${user_id}`
+        `${API_URL}/transaction/userId/${user_id}`, {
+          headers: {
+            Authorization: `Bearer ${userData.jwt}`,
+          },
+        }
       );
       const historiesTransaction = userTicketsTransaction.data;
       await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
@@ -164,10 +195,31 @@ const EticketIn = ({ selectedPeople }) => {
         {/* Image in the middle below App Bar */}
         <View style={styles.orderdetailContainer}>
           {/* White background for payment confirmation data with shadow */}
-          <Image
+          {/* <Image
             source={require("../images/logo_krl.png")}
             style={styles.krlImage}
-          />
+          /> */}
+          {serviceName === "KRL" ? (
+            <Image
+              source={require("../images/kai-commuter-logo.png")}
+              style={[styles.krlImage, { marginLeft: 133 }]}
+            />
+          ) : serviceName === "TJ" ? (
+            <Image
+              source={require("../images/logotije.png")}
+              style={[styles.krlImage, { marginLeft: 133 }]}
+            />
+          ) : serviceName === "MRT" ? (
+            <Image
+              source={require("../images/logomrt.png")}
+              style={[styles.krlImage, { marginLeft: 133 }]}
+            />
+          ) : (
+            <Image
+              source={require("../images/logolrt.png")}
+              style={[styles.krlImage, { marginLeft: 133 }]}
+            />
+          )}
           <Text style={styles.exitgateText}>Exit Gate Ticket </Text>
           <View style={styles.commuterline}></View>
         </View>

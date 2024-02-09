@@ -109,6 +109,13 @@ const KrlOrderForm = () => {
     reorder();
   }, []);
 
+  useEffect(() => {
+    if (selectedStation1 !== null && selectedStation2 !== null && selectedStation1 === selectedStation2) {
+      setIsConfirmationVisible(false);
+      alert("Departure and destination stations should be different.");
+    }
+  }, [selectedStation1, selectedStation2]);
+
   const [fontsLoaded] = useFonts({
     "Poppins-Bold": require("../fonts/Poppins/Poppins-Bold.ttf"),
     "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
@@ -170,10 +177,32 @@ const KrlOrderForm = () => {
           <View>
             <View style={styles.menuContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
+                {/* <Image
                   source={require("../images/kai-commuter-logo.png")}
                   style={[styles.kaiLogo, { marginLeft: 133 }]}
-                />
+                /> */}
+
+                {serviceName === "KRL" ? (
+                  <Image
+                    source={require("../images/kai-commuter-logo.png")}
+                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                  />
+                ) : serviceName === "TJ" ? (
+                  <Image
+                    source={require("../images/logotije.png")}
+                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                  />
+                ) : serviceName === "MRT" ? (
+                  <Image
+                    source={require("../images/logomrt.png")}
+                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                  />
+                ) : (
+                  <Image
+                    source={require("../images/logolrt.png")}
+                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                  />
+                )}
                 
                 <TouchableOpacity style={styles.buttonMaps} onPress={openModal}>
                   <Image
@@ -194,12 +223,36 @@ const KrlOrderForm = () => {
                         style={styles.closeButton}
                         onPress={() => setModalVisible(false)}
                       >
-                        <Ionicons name="close" size={20} color="#005E6A"/>
+                        <Ionicons name="close" size={20} color="#005E6A" />
                       </TouchableOpacity>
-                      <Image
+                      {/* <Image
                         source={require("../images/rute-item.png")}
                         style={{ height: 430, width: 300 }}
-                      />
+                        resizeMode="contain"
+                      /> */}
+
+                      {serviceName === "KRL" ? (
+                        <Image
+                          source={require("../images/ruteKRL-item.png")}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      ) : serviceName === "TJ" ? (
+                        <Image
+                          source={require("../images/ruteTIJE-item.png")}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      ) : serviceName === "MRT" ? (
+                        <Image
+                          source={require("../images/ruteMRT-item.png")}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      ) : (
+                        <Image
+                          source={require("../images/ruteLRT-item.png")}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      )}
+
                     </View>
                   </View>
                 </Modal>
@@ -255,7 +308,7 @@ const KrlOrderForm = () => {
                 </Text>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Image
-                    source={require("../images/trainRight-item.png")}
+                    source={require("../images/trainLeft-item.png")}
                     style={{ height: 40, width: 40, marginTop: 15 }}
                   />
                   {stations && (

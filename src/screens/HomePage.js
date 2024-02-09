@@ -130,6 +130,9 @@ const HomePage = () => {
         params: {
           serviceName: travelinkService,
         },
+        headers: {
+          Authorization: `Bearer ${userData.jwt}`,
+        }
       });
 
       const newStations = response.data.map((station) => ({
@@ -208,7 +211,7 @@ const HomePage = () => {
               <View style={styles.saldoContainer}>
                 <Text style={styles.saldoLabel}>Rp </Text>
                 <Text style={styles.saldoText}>
-                  {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
+                  {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : parseFloat(saldo).toLocaleString('id-ID')}
                 </Text>
               </View>
               <TouchableOpacity onPress={toggleVisibility}>
@@ -291,10 +294,33 @@ const HomePage = () => {
                   <View style={styles.historyContainer}>
                     <View style={styles.historyContent}>
                       <View style={styles.listContainer}>
-                        <Image
+                        {/* <Image
                           source={require("../images/commuter-historyItem.png")}
                           style={{ height: 40, width: 40 }}
-                        ></Image>
+                        ></Image> */}
+
+                        {lastTicket.service.name === "KRL" ? (
+                          <Image
+                            source={require("../images/commuter-historyItem.png")}
+                            style={{ height: 40, width: 40 }}
+                          />
+                        ) : lastTicket.service.name === "TJ" ? (
+                          <Image
+                            source={require("../images/tije-historyItem.png")}
+                            style={{ height: 40, width: 40 }}
+                          />
+                        ) : lastTicket.service.name === "MRT" ? (
+                          <Image
+                            source={require("../images/mrt-historyItem.png")}
+                            style={{ height: 40, width: 40 }}
+                          />
+                        ) : (
+                          <Image
+                            source={require("../images/lrt-historyItem.png")}
+                            style={{ height: 40, width: 40 }}
+                          />
+                        )}
+
                         <View style={styles.textContainer}>
                           <Text style={styles.tittleTraveLink}>{lastTicket.service.name}</Text>
                           <View style={styles.destinationContainer}>
@@ -498,6 +524,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Poppins-ExtraBold",
     marginRight: 5,
+    marginTop: 3,
   },
 
   saldoText: {

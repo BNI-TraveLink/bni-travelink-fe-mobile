@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import HistoryTraveLink from "../components/HistoryTraveLink";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // import {API_URL} from "@env";
 
@@ -27,6 +27,22 @@ const windowHeight = window.height;
 const TraveLink = () => {
   const navigation = useNavigation();
   const [stations, setStations] = useState([]);
+
+  const [userData, setUserData] = useState("");
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const sessionData = await AsyncStorage.getItem("session");
+        const parsedSessionData = JSON.parse(sessionData);
+        setUserData(parsedSessionData);
+      } catch (error) {
+        console.log("Error fetching User Details: ", error);
+      }
+    };
+
+    getUserData();
+  }, []);
 
   const handleBackPress = () => {
     navigation.navigate("Purchase");
@@ -87,6 +103,9 @@ const TraveLink = () => {
       const response = await axios.get(url, {
         params: {
           serviceName: travelinkService,
+        },
+        headers: {
+          Authorization: `Bearer ${userData.jwt}`,
         },
       });
 

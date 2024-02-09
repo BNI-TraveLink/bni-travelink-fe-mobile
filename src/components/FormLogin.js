@@ -62,24 +62,34 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
             "Content-Type": "multipart/form-data",
           }
         })
+        console.log("RESPONSE LOGINNN: " + responseLogin);
 
         if (responseLogin.data) {
           await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
 
+          console.log("Bearer token to get response balance: " + responseLogin.data.jwt)
           const responseBalance = await axios.get(
-            `${apiUrl}/balance/getBalanceByUserId/${responseLogin.data.userId}`
+            `${apiUrl}/balance/getBalanceByUserId/${responseLogin.data.userId}`, {
+              headers: {
+                Authorization: `Bearer ${responseLogin.data.jwt}`,
+              }
+            }
           );
 
           await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
 
           // get last ticket transaction of the user
           const userTicketsTransaction = await axios.get(
-            `${apiUrl}/transaction/userId/${responseLogin.data.userId}`
+            `${apiUrl}/transaction/userId/${responseLogin.data.userId}`, {
+              headers: {
+                Authorization: `Bearer ${responseLogin.data.jwt}`,
+              }
+            }
           );
           
-            // const historiesTransaction = userTicketsTransaction.data.length <= 9 ? userTicketsTransaction.data : userTicketsTransaction.data.slice(-10);
-            console.log("login user tickets transaction",userTicketsTransaction)
-            const historiesTransaction = userTicketsTransaction.data;
+          // const historiesTransaction = userTicketsTransaction.data.length <= 9 ? userTicketsTransaction.data : userTicketsTransaction.data.slice(-10);
+          console.log("login user tickets transaction",userTicketsTransaction)
+          const historiesTransaction = userTicketsTransaction.data;
           const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
 
           await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
