@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 7.1.3"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "releaseChannel": "development",
+      "env": {
+        "ENVIRONMENT": "production",
+        "NODE_ENV": "development",
+        "BABEL_ENV": "release",
+        "APP_VARIANT": "release"
+      }
+      
+    },
+    "preview": {
+      "android":{
+        "buildType" : "apk"
+      }
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
+  }
+}

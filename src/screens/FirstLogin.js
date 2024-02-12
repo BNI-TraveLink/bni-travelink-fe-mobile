@@ -13,6 +13,7 @@ import { useFonts } from "expo-font";
 import FormLogin from "../components/FormLogin"; // Import FormLogin component
 import axios from "axios";
 import { Dimensions } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const window = Dimensions.get('window');
 const windowWidth = window.width;
@@ -23,9 +24,16 @@ const FirstLogin = () => {
   const [userId, setUserId] = useState("");
   const [mpin, setMpin] = useState("");
 
-  const handleLoginPress = () => {
+  const handleLoginPress =  async() => {
+    await AsyncStorage.setItem("btlink", JSON.stringify("false"));
     setModalVisible(true);
   };
+
+  const handleBtlinkPress = async() => {
+    await AsyncStorage.setItem("btlink", JSON.stringify("true"));
+    console.log("kepencet");
+    setModalVisible(true);
+  }
 
   const [fontsLoaded] = useFonts({
     "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
@@ -79,11 +87,15 @@ const FirstLogin = () => {
               imageSource={require("../images/qr-scan-item.png")}
               labelText={"QRIS"}
             />
+            <TouchableOpacity
+            onPress={handleBtlinkPress}>
             <GridMenuItem
               imageSource={require("../images/logo-bnitravelink-item.png")}
               labelText={"BNI TraveLink"}
               style={{ width: 49, height: 24 }}
             />
+            </TouchableOpacity>
+           
             <GridMenuItem
               imageSource={require("../images/menu-item.png")}
               labelText={"Another Menu"}
