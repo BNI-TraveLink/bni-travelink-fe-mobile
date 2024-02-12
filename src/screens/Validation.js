@@ -250,7 +250,14 @@ const Validation = () => {
         }
       );
       const historiesTransaction = userTicketsTransaction.data;
+
+      const lastIndex = historiesTransaction.length - 1;
+      const lastTransaction = historiesTransaction[lastIndex];
+
       await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
+
+
+      await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTransaction));
       
     }catch(Error){
       console.log("Error when Generate Ticket" + Error);
@@ -340,7 +347,7 @@ const Validation = () => {
                 styles.interSemiBold,
               ]}
             >
-              Rp {totalPrice}
+              Rp {Number(totalPrice).toLocaleString('id-ID')}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>

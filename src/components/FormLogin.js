@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
@@ -30,6 +31,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
   const [rememberUser, setRememberUser] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorText, setErrorText] = useState(""); // Tambahkan state errorText
+  const [isBtLinkPressed, setIsBtLinkPressed] = useState("");
 
   const [fontsLoaded] = useFonts({
     InterRegular: require("../fonts/Inter/static/Inter-Regular.ttf"),
@@ -38,6 +40,27 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
 
   const navigation = useNavigation(); // Inisialisasi objek navigasi
 
+ 
+  const getData = async () => {
+ 
+    try {
+      const balanceSessionData = await AsyncStorage.getItem("btlink");
+      const parsedBalanceData = JSON.parse(balanceSessionData);
+      setIsBtLinkPressed(parsedBalanceData.toString());
+      
+    } catch (error) {
+      console.log("Error fetching data: " + error);
+    }
+  };
+  useEffect(() => {
+    const loadData = async () => {
+      await getData();
+    };
+
+  // Call getUserData when the component mounts
+  loadData();
+}, []);
+
   const handleLogin = async () => {
     console.log("login");
     setUser_id("");
@@ -45,6 +68,7 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
     setErrorText("");
 
     const isMpinValid = mpin.length >= 6 && /^\d+$/.test(mpin);
+    
 
     // if (user_id === hardcodedUser_id && isMpinValid && mpin === hardcodedMpin) {
     if (isMpinValid) {
@@ -97,21 +121,28 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTicketTransaction))
 
           // Navigasi ke halaman Home setelah login berhasil
-          navigation.navigate("Home");
+          console.log("isbtlinkpressed",isBtLinkPressed);
+          if(isBtLinkPressed === "true"){
+            console.log("ke btlink");
+            navigation.navigate("TraveLink");
+          }else{
+            console.log("ke home");
+            navigation.navigate("Home");
+          }
+         
         }
-      } catch (error) {
+      }catch (error) {
         console.log(error);
-      setModalVisible(true); // Open the modal if there's an error
-      setIsLoggedIn(false);
-      setErrorText("User ID or MPIN is Incorrect");
-        
+        setModalVisible(true); // Open the modal if there's an error
+        setIsLoggedIn(false);
+        setErrorText("User ID or MPIN is Incorrect");
       }
 
     } else {
       console.log("Login failed. Check your User ID and MPIN.");
-    setModalVisible(true); // Open the modal if there's an error
-    setIsLoggedIn(false);
-    setErrorText("User ID or MPIN is Incorrect");
+      setModalVisible(true); // Open the modal if there's an error
+      setIsLoggedIn(false);
+      setErrorText("User ID or MPIN is Incorrect");
     }
   };
 

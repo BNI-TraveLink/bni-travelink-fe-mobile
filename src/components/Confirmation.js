@@ -155,7 +155,7 @@ const Confirmation = ({
                   Valid until {moment().format('D MMM YYYY')}, 23:59
                 </Text>
               </View>
-              <Text style={styles.textPriceTicket}>Rp {price}</Text>
+              <Text style={styles.textPriceTicket}>Rp {Number(price).toLocaleString('id-ID')}</Text>
             </View>
           </View>
           <View style={styles.unguContainer}>
@@ -259,7 +259,8 @@ const Confirmation = ({
                 <View style={styles.saldoContainer}>
                   <Text style={styles.saldoLabel}>Rp </Text>
                   <Text style={[styles.saldoText, {fontSize: isHidden ? 7 : 14}]}>
-                    {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo}
+                    {/* {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : saldo} */}
+                    {isHidden ? "⬤⬤⬤⬤⬤⬤⬤⬤" : parseFloat(saldo).toLocaleString('id-ID')}
                   </Text>
                   <TouchableOpacity onPress={toggleVisibility}>
                     <Image
@@ -280,7 +281,7 @@ const Confirmation = ({
                 onPress={handlePay}
               >
                 <Text style={styles.buttonText}>Pay</Text>
-                <Text style={styles.pricePay}>Rp {selectedPeople * price}</Text>
+                <Text style={styles.pricePay}>Rp {Number(selectedPeople * price).toLocaleString('id-ID')}</Text>
                 <Image
                   source={require("../images/next-item.png")}
                   style={{ height: 40, width: 40, marginLeft: 10 }}
@@ -310,7 +311,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: "left",
     zIndex: 2,
-    marginTop: -10,
+    marginTop: 15,
   },
 
   hijauText: {
@@ -364,15 +365,18 @@ const styles = StyleSheet.create({
   },
 
   textPriceTicket: {
-    fontSize: 20,
+    fontSize: 16,
     color: "#F15A23",
     fontFamily: "Poppins-Bold",
-    marginTop: 67,
-    marginLeft: 70,
+    // marginTop: 67,
+    // marginLeft: 50,
+    top: 67,
+    right: 20,
+    position: "absolute",
   },
 
   unguContainer: {
-    marginTop: 25,
+    marginTop: 15,
     backgroundColor: "#DECAF8",
     borderRadius: 20,
   },
@@ -441,7 +445,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     justifyContent: "space-between",
     borderTopColor: "#ddd",
-    marginTop: 38,
+    marginTop: 30,
   },
 
   textYourBalance: {

@@ -203,22 +203,22 @@ const EticketIn = ({ selectedPeople }) => {
           {serviceName === "KRL" ? (
             <Image
               source={require("../images/kai-commuter-logo.png")}
-              style={[styles.krlImage, { marginLeft: 133 }]}
+              style={styles.krlImage} resizeMode="contain"
             />
           ) : serviceName === "TJ" ? (
             <Image
               source={require("../images/logotije.png")}
-              style={[styles.krlImage, { marginLeft: 133 }]}
+              style={styles.krlImage} resizeMode="contain"
             />
           ) : serviceName === "MRT" ? (
             <Image
               source={require("../images/logomrt.png")}
-              style={[styles.krlImage, { marginLeft: 133 }]}
+              style={styles.krlImage} resizeMode="contain"
             />
           ) : (
             <Image
               source={require("../images/logolrt.png")}
-              style={[styles.krlImage, { marginLeft: 133 }]}
+              style={styles.krlImage} resizeMode="contain"
             />
           )}
           <Text style={styles.entrancegateText}>Entrance Gate Ticket </Text>
