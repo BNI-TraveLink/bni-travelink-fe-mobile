@@ -142,14 +142,14 @@ const FirstLogin = () => {
 const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
-    height: windowHeight * 0.475,
+    height: windowHeight * 0.485,
   },
 
   appBar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 8,
+    padding: 10,
     // // backgroundColor: 'white',
     // borderBottomWidth: 1,
     // borderBottomColor: 'rgba(0, 0, 0, 0.1)',
@@ -157,16 +157,15 @@ const styles = StyleSheet.create({
     // shadowOffset: { width: 0, height: 2 },
     // shadowOpacity: 0.2,
     // // elevation: 2,
-    paddingRight: 35,
+    paddingRight: 40,
   },
 
 
 firstPict: {
   width: windowWidth, // Adjust width to 80% of window width
-  height: windowHeight * 0.38, // Adjust height to 25% of window height
+  height: windowHeight * 0.39, // Adjust height to 25% of window height
   resizeMode: 'contain', // This ensures the image scales correctly within the bounds you've set
   alignSelf: 'center', // Center the image horizontally within its container
-  marginTop: 16, // Adjust marginTop if needed
   },
 
   centerContent: {
@@ -184,7 +183,7 @@ firstPict: {
     fontSize: 22,
     color: "white",
     textAlign: "center",
-    marginTop: 55,
+    marginTop: 40,
     fontWeight: "bold",
     fontFamily: "Inter-SemiBold",
   },
@@ -194,15 +193,14 @@ firstPict: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 15
   },
 
   buttonLogin: {
     backgroundColor: "#F15A23",
-    padding: 10,
     borderRadius: 20,
-    marginTop: 100,
-    minHeight: windowHeight * 0.05,
-    width: windowWidth * 0.8,
+    minHeight: windowHeight * 0.06,
+    width: windowWidth * 0.75,
     justifyContent: "center"
   },
 
@@ -218,20 +216,19 @@ firstPict: {
     flexDirection: "row",
     justifyContent: "space-between",
     flexWrap: "wrap",
-    marginTop: 80,
+    marginTop: 20,
     paddingHorizontal: 16,
   },
 
   chatUsContainer: {
     flex: 1,
     alignItems: "center",
+    marginTop: 90
   },
 
   buttonChatUs: {
     backgroundColor: "white",
-    padding: 10,
     borderRadius: 20,
-    marginTop: 50,
     width: 90,
     height: 40,
     borderColor: "#005E6A",

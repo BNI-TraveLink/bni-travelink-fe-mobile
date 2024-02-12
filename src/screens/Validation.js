@@ -347,7 +347,7 @@ const Validation = () => {
                 styles.interSemiBold,
               ]}
             >
-              Rp {totalPrice}
+              Rp {Number(totalPrice).toLocaleString('id-ID')}
             </Text>
           </View>
           <View style={styles.paymentConfirmationRow}>

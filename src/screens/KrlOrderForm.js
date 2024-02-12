@@ -27,8 +27,6 @@ const windowHeight = window.height;
 
 let dataUsedToReorder = [];
 
-
-
 const KrlOrderForm = () => {
   const [stations, setStations] = useState([]);
   const [serviceName, setServiceName] = useState("");
@@ -169,11 +167,10 @@ const KrlOrderForm = () => {
             />
           </TouchableOpacity>
           <View style={styles.centerContent}>
-            
             <Text style={styles.logoText}>{serviceName}</Text>
           </View>
         </View>
-        <View style={{ paddingLeft: 10, paddingRight: 10, height: 390 }}>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           <View>
             <View style={styles.menuContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -181,28 +178,37 @@ const KrlOrderForm = () => {
                   source={require("../images/kai-commuter-logo.png")}
                   style={[styles.kaiLogo, { marginLeft: 133 }]}
                 /> */}
-
-                {serviceName === "KRL" ? (
+                <View style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: -30,
+                  marginBottom: -30,
+                  // marginLeft: 50 untuk menggeser logo KAI
+                }}>
+                  {serviceName === "KRL" ? (
                   <Image
                     source={require("../images/kai-commuter-logo.png")}
-                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                    style={{ height: 120, width: 120, marginTop: 10, marginLeft: 100 }} resizeMode="contain"
                   />
                 ) : serviceName === "TJ" ? (
                   <Image
                     source={require("../images/logotije.png")}
-                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                    style={{ height:150, width:150, marginTop: -10, marginLeft: 80 }} resizeMode="contain"
                   />
                 ) : serviceName === "MRT" ? (
                   <Image
                     source={require("../images/logomrt.png")}
-                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                    style={{ height:150, width:150, marginTop: -10, marginLeft: 80 }} resizeMode="contain"
                   />
                 ) : (
                   <Image
                     source={require("../images/logolrt.png")}
-                    style={[styles.kaiLogo, { marginLeft: 133 }]}
+                    style={{height:150, width:150, marginTop: -10, marginLeft: 80 }} resizeMode="contain"
                   />
                 )}
+                </View>
+                
                 
                 <TouchableOpacity style={styles.buttonMaps} onPress={openModal}>
                   <Image
@@ -234,22 +240,26 @@ const KrlOrderForm = () => {
                       {serviceName === "KRL" ? (
                         <Image
                           source={require("../images/ruteKRL-item.png")}
-                          style={{ height: 40, width: 40 }}
+                          style={{ height: 430, width: 300 }}
+                          resizeMode="contain"
                         />
                       ) : serviceName === "TJ" ? (
                         <Image
                           source={require("../images/ruteTIJE-item.png")}
-                          style={{ height: 40, width: 40 }}
+                          style={{ height: 430, width: 300 }}
+                          resizeMode="contain"
                         />
                       ) : serviceName === "MRT" ? (
                         <Image
                           source={require("../images/ruteMRT-item.png")}
-                          style={{ height: 40, width: 40 }}
+                          style={{ height: 430, width: 300 }}
+                          resizeMode="contain"
                         />
                       ) : (
                         <Image
                           source={require("../images/ruteLRT-item.png")}
-                          style={{ height: 40, width: 40 }}
+                          style={{ height: 430, width: 300 }}
+                          resizeMode="contain"
                         />
                       )}
 
@@ -377,7 +387,7 @@ const KrlOrderForm = () => {
             selectedPeople={selectedPeople}
             price={price}
           />
-        {/* <BottomBarOrderForm /> */}
+
       </ImageBackground>
     );
   } else {
@@ -418,7 +428,6 @@ const styles = StyleSheet.create({
   },
 
   menuContainer: {
-    justifyContent: "center",
     marginTop: 20,
     backgroundColor: "#FFF",
     borderRadius: 10,
@@ -432,13 +441,12 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  kaiLogo: {
-    width: 110,
-    height: 40,
-    marginTop: 20,
-  },
+  // kaiLogo: {
+  //   width: 150,
+  //   height: 150,
+  // },
 
-  //container di bawah KAI
+  //container di bawah Logo KAI
   contentContainer: {
     padding: 8,
     borderBottomWidth: 1,
@@ -495,10 +503,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "#00A2B7",
     alignItems: "center",
-    justifyContent: "center",
     flexDirection: "row",
     fontFamily: "Poppins-SemiBold",
-    marginLeft: 25,
+    marginRight: 10
+
   },
 
   buttonTextMaps: {

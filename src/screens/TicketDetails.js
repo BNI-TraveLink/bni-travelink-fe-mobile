@@ -36,15 +36,13 @@ const TicketDetails = () => {
   const [requestData, setRequestData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [state, setState] = useState(null);
-  const [amount,setAmount] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [transaction,setTransaction] = useState(null);
-  const [datePart, setDatePart] = useState('');
-  const [timePart, setTimePart] = useState('');
-  const [expiredAtDate, setExpiredAtDate] = useState('');
-  const [expiredAtTime, setExpiredAtTime] = useState('');
-
-  
+  const [transaction, setTransaction] = useState(null);
+  const [datePart, setDatePart] = useState("");
+  const [timePart, setTimePart] = useState("");
+  const [expiredAtDate, setExpiredAtDate] = useState("");
+  const [expiredAtTime, setExpiredAtTime] = useState("");
 
   // const [fontsLoaded] = useFonts({
   //   "Inter-SemiBold": require("../fonts/Inter/static/Inter-SemiBold.ttf"),
@@ -57,93 +55,100 @@ const TicketDetails = () => {
       try {
         const getUserData = async () => {
           // 1. Get the balance first
-        const balanceSessionData = await AsyncStorage.getItem("balance");
-        const parsedBalanceData = JSON.parse(balanceSessionData);
-        setSaldo(parsedBalanceData.toString());
+          const balanceSessionData = await AsyncStorage.getItem("balance");
+          const parsedBalanceData = JSON.parse(balanceSessionData);
+          setSaldo(parsedBalanceData.toString());
 
-        // 2. Then, get the session data
-        const sessionData = await AsyncStorage.getItem("session");
-        const parsedSessionData = JSON.parse(sessionData);
-        setUserData(parsedSessionData);
-        setUser_id(parsedSessionData.userId);
+          // 2. Then, get the session data
+          const sessionData = await AsyncStorage.getItem("session");
+          const parsedSessionData = JSON.parse(sessionData);
+          setUserData(parsedSessionData);
+          setUser_id(parsedSessionData.userId);
 
-        const serviceData = await AsyncStorage.getItem("travelinkData");
-        const parsedServiceData = JSON.parse(serviceData);
-        setServiceName(parsedServiceData.service);
+          const serviceData = await AsyncStorage.getItem("travelinkData");
+          const parsedServiceData = JSON.parse(serviceData);
+          setServiceName(parsedServiceData.service);
 
-        const departureData = await AsyncStorage.getItem("departure");
-        const parsedDepartureData = JSON.parse(departureData);
-        setDeparture(parsedDepartureData);
+          const departureData = await AsyncStorage.getItem("departure");
+          const parsedDepartureData = JSON.parse(departureData);
+          setDeparture(parsedDepartureData);
 
-        const destinationData = await AsyncStorage.getItem("destination");
-        const parsedDestinationData = JSON.parse(destinationData);
-        setDestination(parsedDestinationData);
+          const destinationData = await AsyncStorage.getItem("destination");
+          const parsedDestinationData = JSON.parse(destinationData);
+          setDestination(parsedDestinationData);
 
-        const amountData = await AsyncStorage.getItem("amount");
-        const parsedAmountData = JSON.parse(amountData);
-        setAmount(parsedAmountData);
+          const amountData = await AsyncStorage.getItem("amount");
+          const parsedAmountData = JSON.parse(amountData);
+          setAmount(parsedAmountData);
 
-        const totalPriceData = await AsyncStorage.getItem("totalPrice");
-        const parsedTotalPricedData = JSON.parse(totalPriceData);
-        setTotalPrice(parsedTotalPricedData);
+          const totalPriceData = await AsyncStorage.getItem("totalPrice");
+          const parsedTotalPricedData = JSON.parse(totalPriceData);
+          setTotalPrice(parsedTotalPricedData);
 
-        const orderIdData = await AsyncStorage.getItem("orderId");
-        const parsedOrderIdData = JSON.parse(orderIdData);
-        setOrderId(parsedOrderIdData);
+          const orderIdData = await AsyncStorage.getItem("orderId");
+          const parsedOrderIdData = JSON.parse(orderIdData);
+          setOrderId(parsedOrderIdData);
 
-        console.log("receipt.js parsedOrderdData");
-        await getTransaction(parsedOrderIdData, parsedSessionData.jwt);
+          console.log("receipt.js parsedOrderdData");
+          await getTransaction(parsedOrderIdData, parsedSessionData.jwt);
         };
         const getTransaction = async (orderId, jwtToken) => {
           try {
-            console.log("orderID",orderId);
+            console.log("orderID", orderId);
             const transaction = await axios.get(
-              `${apiUrl}/transaction/orderId/${orderId}`, {
+              `${apiUrl}/transaction/orderId/${orderId}`,
+              {
                 headers: {
                   Authorization: `Bearer ${jwtToken}`,
-                }
+                },
               }
             );
             setTransaction(transaction.data.data);
-            console.log("transaction",transaction);
-            console.log("transaction",transaction.data);
-            console.log("date",transaction.data.createdAt);
-            await AsyncStorage.setItem("transaction", JSON.stringify( transaction.data));
+            console.log("transaction", transaction);
+            console.log("transaction", transaction.data);
+            console.log("date", transaction.data.createdAt);
+            await AsyncStorage.setItem(
+              "transaction",
+              JSON.stringify(transaction.data)
+            );
             expiredDatetime = new Date(transaction.data.expiredAt);
-            setExpiredAtDate(expiredDatetime.toISOString().split('T')[0]);
-            setExpiredAtTime(expiredDatetime.toLocaleTimeString('id-ID', {
-              hour12: false, // Use 24-hour format
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit'
-            }));
+            setExpiredAtDate(expiredDatetime.toISOString().split("T")[0]);
+            setExpiredAtTime(
+              expiredDatetime.toLocaleTimeString("id-ID", {
+                hour12: false, // Use 24-hour format
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              })
+            );
             createdAtDate = new Date(transaction.data.createdAt);
-            const newDatePart = createdAtDate.toISOString().split('T')[0];
-            const newTimePart = createdAtDate.toLocaleTimeString('id-ID', {
+            const newDatePart = createdAtDate.toISOString().split("T")[0];
+            const newTimePart = createdAtDate.toLocaleTimeString("id-ID", {
               hour12: false, // Use 24-hour format
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit'
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
             });
             setDatePart(newDatePart);
             setTimePart(newTimePart);
-        
+
             console.log("Date:", newDatePart);
             console.log("Time:", newTimePart);
           } catch (error) {
-            console.log("Error fetching transaction in TicketDetails: " + error);
+            console.log(
+              "Error fetching transaction in TicketDetails: " + error
+            );
           }
         };
-  
+
         await getUserData();
       } catch (error) {
         console.log("Error fetching data: " + error);
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   if (!fontsLoaded) {
     // You can return an empty View or null for now, as we are only interested in the app bar
@@ -200,22 +205,22 @@ const TicketDetails = () => {
         {serviceName === "KRL" ? (
           <Image
             source={require("../images/kai-commuter-logo.png")}
-            style={[styles.krlImage, { marginLeft: 133 }]}
+            style={styles.krlImage} resizeMode="contain"
           />
         ) : serviceName === "TJ" ? (
           <Image
             source={require("../images/logotije.png")}
-            style={[styles.krlImage, { marginLeft: 133 }]}
+            style={styles.krlImage} resizeMode="contain"
           />
         ) : serviceName === "MRT" ? (
           <Image
             source={require("../images/logomrt.png")}
-            style={[styles.krlImage, { marginLeft: 133 }]}
+            style={styles.krlImage} resizeMode="contain"
           />
         ) : (
           <Image
             source={require("../images/logolrt.png")}
-            style={[styles.krlImage, { marginLeft: 133 }]}
+            style={styles.krlImage} resizeMode="contain"
           />
         )}
         <View style={styles.paymentConfirmationRow}>
@@ -280,7 +285,7 @@ const TicketDetails = () => {
             </Text>
           </View>
         </View>
-        <View style={styles.locationContainer}>
+        {/* <View style={styles.locationContainer}>
           <Image
             source={require("../images/location.png")}
             style={styles.locationImage}
@@ -288,6 +293,23 @@ const TicketDetails = () => {
           <Text style={styles.fromText}>{departure}</Text>
           <Text style={styles.toText}>{destination}</Text>
           <Text style={styles.validText}>Valid until {expiredAtDate},23.59</Text>
+        </View> */}
+        <View style={styles.locationContainer}>
+          <View style={styles.locationContent}>
+            <Image
+              source={require("../images/location.png")}
+              style={styles.locationImage}
+            />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={styles.fromText}>{departure}</Text>
+              <Text style={[styles.toText, { marginTop: 50 }]}>
+                {destination}
+              </Text>
+              <Text style={styles.validText}>
+                Valid until {expiredAtDate},23.59
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
       {/* White background at the bottom with a button */}
@@ -518,40 +540,39 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   locationImage: {
-    top: 52,
     width: 20,
     height: 79,
-    marginLeft: 25,
   },
   fromText: {
     color: "#005E6A",
     fontSize: 14,
     fontWeight: "600",
-    top: -22,
-    marginLeft: 132,
-    marginBottom: 16,
   },
   toText: {
     color: "#005E6A",
     fontSize: 14,
     fontWeight: "600",
-    marginLeft: 140,
-    top: 6,
   },
   validText: {
     color: "#F15A23",
     fontSize: 10,
     fontWeight: "500",
-    marginLeft: 194,
-    marginTop: 15,
+    // marginLeft: 194,
+    marginTop: 5
   },
   locationContainer: {
     top: -210,
-    left: -130,
-    right: 180,
+    // left: -130,
+    // right: 180,
     position: "absolute",
-    alignItems: "center",
-    marginBottom: 0,
+    // alignItems: "csenter",
+    // marginBottom: 0,
+  },
+
+  locationContent: {
+    flexDirection: "row",
+    marginTop: 60,
+    marginLeft: -150
   },
 });
 

@@ -1,9 +1,13 @@
 import React from "react";
-import { View, ImageBackground, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, ImageBackground, Image, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import GridHomeMenu from "../components/GridHomeMenu";
 import { useNavigation } from "@react-navigation/native";
+
+const window = Dimensions.get("window");
+const windowWidth = window.width;
+const windowHeight = window.height;
 
 const Purchase = () => {
   const navigation = useNavigation();
@@ -90,7 +94,8 @@ const Purchase = () => {
 const styles = StyleSheet.create({
   backgroundGradient: {
     paddingTop: 30,
-    height: 77,
+    flex: 1,
+    height: windowHeight * 0.09,
   },
 
   appBar: {

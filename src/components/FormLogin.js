@@ -131,32 +131,18 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           }
          
         }
-      } catch (error) {
-        // console.error(error);
-        Alert.alert(
-          'Error',
-          error.toString(),
-          [
-            {
-              text: 'OK',
-              onPress: () => console.log('OK Pressed'),
-            },
-          ]
-        );
-      
-      
-    
-      setModalVisible(true); // Open the modal if there's an error
-      setIsLoggedIn(false);
-      setErrorText("User ID or MPIN is Incorrect");
-        
+      }catch (error) {
+        console.log(error);
+        setModalVisible(true); // Open the modal if there's an error
+        setIsLoggedIn(false);
+        setErrorText("User ID or MPIN is Incorrect");
       }
 
     } else {
       console.log("Login failed. Check your User ID and MPIN.");
-    setModalVisible(true); // Open the modal if there's an error
-    setIsLoggedIn(false);
-    setErrorText("User ID or MPIN is Incorrect");
+      setModalVisible(true); // Open the modal if there's an error
+      setIsLoggedIn(false);
+      setErrorText("User ID or MPIN is Incorrect");
     }
   };
 
