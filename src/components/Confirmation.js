@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     justifyContent: "space-between",
     borderTopColor: "#ddd",
-    marginTop: 30,
+    marginTop: 50,
   },
 
   textYourBalance: {

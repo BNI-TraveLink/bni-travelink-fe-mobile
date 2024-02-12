@@ -208,17 +208,17 @@ const EticketIn = ({ selectedPeople }) => {
           ) : serviceName === "TJ" ? (
             <Image
               source={require("../images/logotije.png")}
-              style={styles.krlImage} resizeMode="contain"
+              style={styles.tijeImage} resizeMode="contain"
             />
           ) : serviceName === "MRT" ? (
             <Image
               source={require("../images/logomrt.png")}
-              style={styles.krlImage} resizeMode="contain"
+              style={styles.mrtImage} resizeMode="contain"
             />
           ) : (
             <Image
               source={require("../images/logolrt.png")}
-              style={styles.krlImage} resizeMode="contain"
+              style={styles.lrtImage} resizeMode="contain"
             />
           )}
           <Text style={styles.entrancegateText}>Entrance Gate Ticket </Text>
@@ -434,6 +434,28 @@ const styles = StyleSheet.create({
     marginLeft: 145,
     resizeMode: "cover",
   },
+
+  mrtImage:{
+    position: "absolute",
+    width: 150,
+    height: 150,
+    // top: 30,
+    // marginLeft: 145,
+    // resizeMode: "cover",
+  },
+
+  tijeImage: {
+    position: "absolute",
+    width: 160,
+    height: 160,
+  },
+
+  lrtImage: {
+    position: "absolute",
+    width: 160,
+    height: 160
+  },
+
   entrancegateText: {
     fontSize: 20,
     color: "#005E6A",
