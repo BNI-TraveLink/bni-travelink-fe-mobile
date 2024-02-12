@@ -205,22 +205,24 @@ const TicketDetails = () => {
         {serviceName === "KRL" ? (
           <Image
             source={require("../images/kai-commuter-logo.png")}
-            style={styles.krlImage} resizeMode="contain"
+            style={[styles.krlImage, { marginLeft: 133 }]}
           />
         ) : serviceName === "TJ" ? (
           <Image
             source={require("../images/logotije.png")}
-            style={styles.krlImage} resizeMode="contain"
+            style={styles.krlImage}
+            resizeMode="contain"
           />
         ) : serviceName === "MRT" ? (
           <Image
             source={require("../images/logomrt.png")}
-            style={styles.krlImage} resizeMode="contain"
+            style={[styles.krlImage, { marginLeft: 133 }]}
           />
         ) : (
           <Image
             source={require("../images/logolrt.png")}
-            style={styles.krlImage} resizeMode="contain"
+            style={styles.krlImage}
+            resizeMode="contain"
           />
         )}
         <View style={styles.paymentConfirmationRow}>
@@ -285,15 +287,6 @@ const TicketDetails = () => {
             </Text>
           </View>
         </View>
-        {/* <View style={styles.locationContainer}>
-          <Image
-            source={require("../images/location.png")}
-            style={styles.locationImage}
-          />
-          <Text style={styles.fromText}>{departure}</Text>
-          <Text style={styles.toText}>{destination}</Text>
-          <Text style={styles.validText}>Valid until {expiredAtDate},23.59</Text>
-        </View> */}
         <View style={styles.locationContainer}>
           <View style={styles.locationContent}>
             <Image
@@ -540,39 +533,46 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   locationImage: {
+    // top: 52,
     width: 20,
     height: 79,
+    // marginLeft: 25,
   },
   fromText: {
     color: "#005E6A",
     fontSize: 14,
     fontWeight: "600",
+    // top: -22,
+    // marginLeft: 132,
+    // marginBottom: 16,
   },
   toText: {
     color: "#005E6A",
     fontSize: 14,
     fontWeight: "600",
+    // marginLeft: 140,
+    // top: 6,
   },
   validText: {
     color: "#F15A23",
     fontSize: 10,
     fontWeight: "500",
     // marginLeft: 194,
-    marginTop: 5
+    marginTop: 5,
   },
   locationContainer: {
     top: -210,
     // left: -130,
     // right: 180,
     position: "absolute",
-    // alignItems: "csenter",
+    // alignItems: "center",
     // marginBottom: 0,
   },
 
   locationContent: {
     flexDirection: "row",
     marginTop: 60,
-    marginLeft: -150
+    marginLeft: -150,
   },
 });
 

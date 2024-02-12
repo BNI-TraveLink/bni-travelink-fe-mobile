@@ -265,6 +265,14 @@ const Validation = () => {
   }
 
   const handlePay = async () => {
+    console.log("saldo",saldo);
+    console.log("totalprice",totalPrice);
+    if (saldo < totalPrice){
+      Alert.alert(
+        "Your transaction cannot be processed. Your debit account has an insufficient balance. Ensure that your balance is available and repeat your transaction."
+      );
+      return; // Hentikan eksekusi jika saldo tidak mencukupi
+    }
     await handleTransactionPassword();
   };
 
