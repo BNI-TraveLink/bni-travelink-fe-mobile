@@ -114,11 +114,12 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           // const historiesTransaction = userTicketsTransaction.data.length <= 9 ? userTicketsTransaction.data : userTicketsTransaction.data.slice(-10);
           console.log("login user tickets transaction",userTicketsTransaction)
           const historiesTransaction = userTicketsTransaction.data;
-          const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
-
-          await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
-          
-          await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTicketTransaction))
+          if(historiesTransaction.length > 0){
+            const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
+            await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
+            await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTicketTransaction))
+          }
+         
 
           // Navigasi ke halaman Home setelah login berhasil
           console.log("isbtlinkpressed",isBtLinkPressed);
