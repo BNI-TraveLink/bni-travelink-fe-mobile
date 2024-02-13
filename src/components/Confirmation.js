@@ -64,6 +64,7 @@ const Confirmation = ({
     "Poppins-SemiBold": require("../fonts/Poppins/Poppins-SemiBold.ttf"),
     "Poppins-Medium": require("../fonts/Poppins/Poppins-Medium.ttf"),
     "Inter-Light": require("../fonts/Inter/static/Inter-Light.ttf"),
+    "Poppins-ExtraBold": require("../fonts/Poppins/Poppins-ExtraBold.ttf"),
     "Inter-Regular": require("../fonts/Inter/static/Inter-Regular.ttf"),
     "Inter-Bold": require("../fonts/Inter/static/Inter-Bold.ttf"),
   });
