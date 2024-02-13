@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import Constants from "expo-constants";
@@ -14,29 +14,41 @@ const HistoryTraveLink = () => {
   const [userHistoriesTransaction, setUserHistoriesTransaction] = useState([]);
   const [stations, setStations] = useState([]);
 
-  useEffect(() => {
-    const getHistoryTransaction = async () => {
-      // userHistoriesTransaction = [];
-      setUserHistoriesTransaction([]);
-      try {
-      
-        const historiesTransaction = await AsyncStorage.getItem("historiesTransaction");
-        const parsedHistoriesTransaction = JSON.parse(historiesTransaction);
-        // userHistoriesTransaction = parsedHistoriesTransaction;
 
-        parsedHistoriesTransaction.reverse();
-        const reversedAndSlicedHistoriesTransaction = parsedHistoriesTransaction.slice(0, 5);
-        console.log("history order", parsedHistoriesTransaction);
-        console.log("history order reverse", reversedAndSlicedHistoriesTransaction);
 
-        setUserHistoriesTransaction(reversedAndSlicedHistoriesTransaction);
-      } catch (error) {
-        console.log("Error while fetching History Transaction: " + error);
-      }
+  const getHistoryTransaction = async () => {
+    // userHistoriesTransaction = [];
+    setUserHistoriesTransaction([]);
+    try {
+    
+      const historiesTransaction = await AsyncStorage.getItem("historiesTransaction");
+      const parsedHistoriesTransaction = JSON.parse(historiesTransaction);
+      // userHistoriesTransaction = parsedHistoriesTransaction;
+
+      // parsedHistoriesTransaction.reverse();
+      // const reversedAndSlicedHistoriesTransaction = parsedHistoriesTransaction.slice(0, 5);
+      // console.log("history order", parsedHistoriesTransaction);
+      // console.log("history order reverse", reversedAndSlicedHistoriesTransaction);
+
+      setUserHistoriesTransaction(parsedHistoriesTransaction);
+    } catch (error) {
+      console.log("Error while fetching History Transaction: " + error);
     }
+  }
 
-    getHistoryTransaction();
-  }, []);
+  useEffect(() => {
+    const loadData = async () => {
+      await getHistoryTransaction();
+    };
+  loadData();
+}, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("masuk lagi");
+      getHistoryTransaction();
+    }, []) // Remove lastTicket from the dependency array
+  );
 
   const formatDate = (dateString) => {
     const createdAtDate = new Date(dateString);
@@ -51,6 +63,7 @@ const HistoryTraveLink = () => {
 
   const handleHistoryActive = async (lastTicket) => {
     console.log("handlehistoryactive", lastTicket);
+    await AsyncStorage.setItem("ticketClick", JSON.stringify("true"));
     const dataToSave = {
       service: lastTicket.service.name,
       stations: null, // Use the updated stations

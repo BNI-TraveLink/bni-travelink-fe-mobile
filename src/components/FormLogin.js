@@ -91,16 +91,16 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
         if (responseLogin.data) {
           await AsyncStorage.setItem("session", JSON.stringify(responseLogin.data));
 
-          console.log("Bearer token to get response balance: " + responseLogin.data.jwt)
-          const responseBalance = await axios.get(
-            `${apiUrl}/balance/getBalanceByUserId/${responseLogin.data.userId}`, {
-              headers: {
-                Authorization: `Bearer ${responseLogin.data.jwt}`,
-              }
-            }
-          );
+          // console.log("Bearer token to get response balance: " + responseLogin.data.jwt)
+          // const responseBalance = await axios.get(
+          //   `${apiUrl}/balance/getBalanceByUserId/${responseLogin.data.userId}`, {
+          //     headers: {
+          //       Authorization: `Bearer ${responseLogin.data.jwt}`,
+          //     }
+          //   }
+          // );
 
-          await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
+          // await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
 
           // get last ticket transaction of the user
           const userTicketsTransaction = await axios.get(
@@ -116,7 +116,10 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           const historiesTransaction = userTicketsTransaction.data;
           if(historiesTransaction.length > 0){
             const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
-            await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
+            historiesTransaction.reverse();
+            const reversedAndSlicedHistoriesTransaction = historiesTransaction.slice(0, 5);
+
+            await AsyncStorage.setItem("historiesTransaction", JSON.stringify(reversedAndSlicedHistoriesTransaction));
             await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTicketTransaction))
             console.log("lastiticket transaction data", lastTicketTransaction.service.name);
 

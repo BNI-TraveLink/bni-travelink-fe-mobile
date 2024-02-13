@@ -253,8 +253,14 @@ const Validation = () => {
 
       const lastIndex = historiesTransaction.length - 1;
       const lastTransaction = historiesTransaction[lastIndex];
+      historiesTransaction.reverse();
+      const reversedAndSlicedHistoriesTransaction = historiesTransaction.slice(0, 5);
+      
 
-      await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
+      console.log("history pas pencet pw transaksi", historiesTransaction);
+      console.log("last transaksi pas pencet pw transaksi", lastTransaction);
+      
+      await AsyncStorage.setItem("historiesTransaction", JSON.stringify(reversedAndSlicedHistoriesTransaction));
 
 
       await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTransaction));

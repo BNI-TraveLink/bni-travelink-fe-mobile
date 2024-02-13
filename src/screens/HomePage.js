@@ -40,15 +40,24 @@ const HomePage = () => {
     // lastTicket = null;
     setLastTicket(null);
     try {
-      // 1. Get the balance first
-      const balanceSessionData = await AsyncStorage.getItem("balance");
-      const parsedBalanceData = JSON.parse(balanceSessionData);
-      setSaldo(parsedBalanceData.toString());
-
-      // 2. Then, get the session data
       const sessionData = await AsyncStorage.getItem("session");
       const parsedSessionData = JSON.parse(sessionData);
       setUserData(parsedSessionData);
+
+      const responseBalance = await axios.get(
+        `${apiUrl}/balance/getBalanceByUserId/${parsedSessionData.userId}`, {
+          headers: {
+            Authorization: `Bearer ${parsedSessionData.jwt}`,
+          }
+        }
+      );
+      await AsyncStorage.setItem("balance", JSON.stringify(responseBalance.data));
+
+      
+      // const balanceSessionData = await AsyncStorage.getItem("balance");
+      // const parsedBalanceData = JSON.parse(balanceSessionData);
+      setSaldo(responseBalance.data.toString());
+
 
       // 3. Get the last ticket transaction
       const lastTicketTransaction = await AsyncStorage.getItem(
@@ -111,6 +120,7 @@ const HomePage = () => {
 
   const handleHistoryActive = async () => {
     // console.log("handlehistoryactive", lastTicket);
+    await AsyncStorage.setItem("ticketClick", JSON.stringify("true"));
     await AsyncStorage.setItem("transaction", JSON.stringify(lastTicket));
     navigation.navigate("EticketIn");
   };

@@ -28,6 +28,7 @@ const EticketIn = ({ selectedPeople }) => {
 
   const [userData, setUserData] = useState("");
   const [serviceName, setServiceName] = useState("");
+  const [ticketClick, setTicketClick] = useState("");
 
   useEffect(() => {
     const getUserData = async () => {
@@ -39,7 +40,11 @@ const EticketIn = ({ selectedPeople }) => {
         const serviceData = await AsyncStorage.getItem("travelinkData");
         const parsedServiceData = JSON.parse(serviceData);
         setServiceName(parsedServiceData.service);
-        
+
+        const ticketClickData = await AsyncStorage.getItem("ticketClick");
+        const parsedTicketClickData = JSON.parse(ticketClickData);
+        setTicketClick(parsedTicketClickData);
+
         await getTicketsDetail(parsedSessionData.jwt);
       } catch (error) {
         console.log("Error fetching user data: ", error);
@@ -62,7 +67,7 @@ const EticketIn = ({ selectedPeople }) => {
           return null;
         }
 
-        return parsedTransactionData
+        return parsedTransactionData;
       } catch (error) {
         console.log("Error parsing transaction data:", error);
         return null;
@@ -80,13 +85,11 @@ const EticketIn = ({ selectedPeople }) => {
           return;
         }
 
-        const response = await axios.get(
-          `${apiUrl}/tickets/${fkTransaction}`, {
-            headers: {
-              Authorization: `Bearer ${jwtToken}`,
-            }
-          }
-        );
+        const response = await axios.get(`${apiUrl}/tickets/${fkTransaction}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        });
         const data = response.data;
 
         const extractedData = data.map((ticket) => ({
@@ -95,15 +98,17 @@ const EticketIn = ({ selectedPeople }) => {
 
         setTicketsDetail(extractedData);
 
-
         // // get last ticket transaction of the user
         // const userTicketsTransaction = await axios.get(
         //   `${apiUrl}/transaction/userId/${responseLogin.data.userId}`
         // );
-        
+
         // const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
-      
-        await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(transactiondata));
+
+        await AsyncStorage.setItem(
+          "lastTicketTransaction",
+          JSON.stringify(transactiondata)
+        );
       } catch (error) {
         console.log("Error storing tickets detail:", error);
       }
@@ -171,14 +176,17 @@ const EticketIn = ({ selectedPeople }) => {
 
       {/* App Bar */}
       <View style={styles.appBarContainer}>
-        <TouchableOpacity onPress={handleBack}>
-          {/* <TouchableOpacity> */}
-          {/* Left Icon (Back Arrow) */}
-          <Image
-            source={require("../images/ion_arrow-back.png")}
-            style={styles.backArrowImage}
-          />
-        </TouchableOpacity>
+        {ticketClick !== "true" ? (
+          <TouchableOpacity onPress={handleBack}>
+            {/* Left Icon (Back Arrow) */}
+            <Image
+              source={require("../images/ion_arrow-back.png")}
+              style={styles.backArrowImage}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.emptySpace} />
+        )}
 
         {/* Title (Purchase) */}
         <Text style={styles.title}>E-Ticket</Text>
@@ -203,22 +211,26 @@ const EticketIn = ({ selectedPeople }) => {
           {serviceName === "KRL" ? (
             <Image
               source={require("../images/kai-commuter-logo.png")}
-              style={styles.krlImage} resizeMode="contain"
+              style={styles.krlImage}
+              resizeMode="contain"
             />
           ) : serviceName === "TJ" ? (
             <Image
               source={require("../images/logotije.png")}
-              style={styles.tijeImage} resizeMode="contain"
+              style={styles.tijeImage}
+              resizeMode="contain"
             />
           ) : serviceName === "MRT" ? (
             <Image
               source={require("../images/logomrt.png")}
-              style={styles.mrtImage} resizeMode="contain"
+              style={styles.mrtImage}
+              resizeMode="contain"
             />
           ) : (
             <Image
               source={require("../images/logolrt.png")}
-              style={styles.lrtImage} resizeMode="contain"
+              style={styles.lrtImage}
+              resizeMode="contain"
             />
           )}
           <Text style={styles.entrancegateText}>Entrance Gate Ticket </Text>
@@ -362,6 +374,10 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  emptySpace: {
+    width: 24, // Adjust the width to match the size of the back arrow
+    height: 24, // Adjust the height to match the size of the back arrow
+  },
 
   rightAlign: {
     textAlign: "right",
@@ -435,7 +451,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
 
-  mrtImage:{
+  mrtImage: {
     position: "absolute",
     width: 150,
     height: 150,
@@ -453,7 +469,7 @@ const styles = StyleSheet.create({
   lrtImage: {
     position: "absolute",
     width: 160,
-    height: 160
+    height: 160,
   },
 
   entrancegateText: {

@@ -158,7 +158,8 @@ const TicketDetails = () => {
   const handleBack = () => {
     navigation.navigate("Receipt");
   };
-  const handleOpen = () => {
+  const handleOpen = async () => {
+    await AsyncStorage.setItem("ticketClick", JSON.stringify("false"));
     navigation.navigate("EticketIn");
   };
   const handleHome = () => {

@@ -123,17 +123,17 @@ const Receipt = () => {
 
             console.log("jwtToken in Receipt for userTicketsTransaction: " + jwtToken);
             console.log(`Data sent to BE: ${apiUrl}/transaction/userId/${userId}`);
-            const userTicketsTransaction = await axios.get(
-              `${apiUrl}/transaction/userId/${userId}`, {
-                headers: {
-                  Authorization: `Bearer ${jwtToken}`,
-                }
-              }
-            );
-            console.log("userTicketsTransaction: " + userTicketsTransaction);
-            console.log("DATA: " + userTicketsTransaction.data);
-            const historiesTransaction = userTicketsTransaction.data;
-            await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
+            // const userTicketsTransaction = await axios.get(
+            //   `${apiUrl}/transaction/userId/${userId}`, {
+            //     headers: {
+            //       Authorization: `Bearer ${jwtToken}`,
+            //     }
+            //   }
+            // );
+            // console.log("userTicketsTransaction: " + userTicketsTransaction);
+            // console.log("DATA: " + userTicketsTransaction.data);
+            // const historiesTransaction = userTicketsTransaction.data;
+            // await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
             
           } catch (error) {
             console.log("Error fetching transaction in Receipt: " + error);

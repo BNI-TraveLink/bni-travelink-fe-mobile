@@ -139,7 +139,9 @@ const EticketIn = ({ selectedPeople }) => {
         }
       );
       const historiesTransaction = userTicketsTransaction.data;
-      await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
+      historiesTransaction.reverse();
+      const reversedAndSlicedHistoriesTransaction = historiesTransaction.slice(0, 5);
+      await AsyncStorage.setItem("historiesTransaction", JSON.stringify(reversedAndSlicedHistoriesTransaction));
 
 
     } catch (error) {
