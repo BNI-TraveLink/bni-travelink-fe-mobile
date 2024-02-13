@@ -112,22 +112,33 @@ const FormLogin = ({ modalVisible, setModalVisible }) => {
           );
           
           // const historiesTransaction = userTicketsTransaction.data.length <= 9 ? userTicketsTransaction.data : userTicketsTransaction.data.slice(-10);
-          console.log("login user tickets transaction",userTicketsTransaction)
+          // console.log("login user tickets transaction",userTicketsTransaction)
           const historiesTransaction = userTicketsTransaction.data;
           if(historiesTransaction.length > 0){
             const lastTicketTransaction = userTicketsTransaction.data[userTicketsTransaction.data.length - 1];
             await AsyncStorage.setItem("historiesTransaction", JSON.stringify(historiesTransaction));
             await AsyncStorage.setItem("lastTicketTransaction", JSON.stringify(lastTicketTransaction))
+            console.log("lastiticket transaction data", lastTicketTransaction.service.name);
+
+
+            const dataToSave = {
+              service: lastTicketTransaction.service.name,
+              stations: null, // Use the updated stations
+              price: null
+               };
+      
+            await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
+
           }
          
 
           // Navigasi ke halaman Home setelah login berhasil
-          console.log("isbtlinkpressed",isBtLinkPressed);
+          // console.log("isbtlinkpressed",isBtLinkPressed);
           if(isBtLinkPressed === "true"){
-            console.log("ke btlink");
+            // console.log("ke btlink");
             navigation.navigate("TraveLink");
           }else{
-            console.log("ke home");
+            // console.log("ke home");
             navigation.navigate("Home");
           }
          

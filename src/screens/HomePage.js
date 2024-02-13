@@ -110,7 +110,7 @@ const HomePage = () => {
   };
 
   const handleHistoryActive = async () => {
-    console.log("handlehistoryactive", lastTicket);
+    // console.log("handlehistoryactive", lastTicket);
     await AsyncStorage.setItem("transaction", JSON.stringify(lastTicket));
     navigation.navigate("EticketIn");
   };

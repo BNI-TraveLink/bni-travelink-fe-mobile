@@ -51,6 +51,12 @@ const HistoryTraveLink = () => {
 
   const handleHistoryActive = async (lastTicket) => {
     console.log("handlehistoryactive", lastTicket);
+    const dataToSave = {
+      service: lastTicket.service.name,
+      stations: null, // Use the updated stations
+      price: null
+       };
+    await AsyncStorage.setItem('travelinkData', JSON.stringify(dataToSave));
     await AsyncStorage.setItem("transaction", JSON.stringify(lastTicket));
     navigation.navigate("EticketIn");
   };
