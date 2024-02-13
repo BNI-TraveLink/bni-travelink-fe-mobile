@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     height: 30,
   },
   emptySpace: {
-    width: '25%', // Adjust the width to match the size of the back arrow
+    width: '35%', // Adjust the width to match the size of the back arrow
     height: 24, // Adjust the height to match the size of the back arrow
   },
 
