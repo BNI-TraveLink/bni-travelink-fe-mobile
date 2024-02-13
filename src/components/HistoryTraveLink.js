@@ -13,6 +13,8 @@ const HistoryTraveLink = () => {
   const navigation = useNavigation();
   const [userHistoriesTransaction, setUserHistoriesTransaction] = useState([]);
   const [stations, setStations] = useState([]);
+  const [userData, setUserData] = useState("");
+
 
 
 
@@ -23,6 +25,10 @@ const HistoryTraveLink = () => {
     
       const historiesTransaction = await AsyncStorage.getItem("historiesTransaction");
       const parsedHistoriesTransaction = JSON.parse(historiesTransaction);
+
+      const sessionData = await AsyncStorage.getItem("session");
+      const parsedSessionData = JSON.parse(sessionData);
+      setUserData(parsedSessionData);
       // userHistoriesTransaction = parsedHistoriesTransaction;
 
       // parsedHistoriesTransaction.reverse();
